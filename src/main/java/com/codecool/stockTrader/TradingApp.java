@@ -7,8 +7,19 @@ import java.util.Scanner;
  * Provides a command line interface for stock trading.
  **/
 public class TradingApp {
+    private final Trader trader;
+    private final Loggable logger;
+
+    public TradingApp(Trader trader, FileLogger logger) {
+        this.trader = trader;
+        this.logger = logger;
+    }
+
     public static void main(String[] args) {
-        TradingApp app = new TradingApp();
+        StockAPIService stockAPIService = new StockAPIService();
+        FileLogger logger = new FileLogger();
+        Trader trader = new Trader(stockAPIService, logger);
+        TradingApp app = new TradingApp(trader, logger);
         app.start();
     }
 
@@ -25,16 +36,15 @@ public class TradingApp {
             return;
         }
 
-        Loggable fileLogger = new FileLogger();
         try {
-            boolean purchased = Trader.getInstance().buy(symbol, price);
+            boolean purchased = trader.buy(symbol, price);
             if (purchased) {
-                fileLogger.log("Purchased stock!");
+                logger.log("Purchased stock!");
             } else {
-                fileLogger.log("Couldn't buy the stock at that price.");
+                logger.log("Couldn't buy the stock at that price.");
             }
         } catch (Exception e) {
-            fileLogger.log("There was an error while attempting to buy the stock: " + e.getMessage());
+            logger.log("There was an error while attempting to buy the stock: " + e.getMessage());
         }
     }
 }

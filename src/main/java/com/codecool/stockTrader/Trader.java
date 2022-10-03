@@ -7,18 +7,12 @@ import java.io.IOException;
  **/
 public class Trader {
 
-    private static Trader instance;
     private final StockAPIService stockService;
+    private final Loggable fileLogger;
 
-    public Trader() {
-        this.stockService = new StockAPIService();
-    }
-
-    public static Trader getInstance() {
-        if (instance == null) {
-            instance = new Trader();
-        }
-        return instance;
+    public Trader(StockAPIService stockAPIService, Loggable logger) {
+        this.stockService = stockAPIService;
+        this.fileLogger = logger;
     }
 
     /**
@@ -30,7 +24,6 @@ public class Trader {
         double price = stockService.getPrice(symbol);
 
         boolean result;
-        Loggable fileLogger = new FileLogger();
         if (price <= bid) {
             result = true;
             stockService.buy(symbol);
