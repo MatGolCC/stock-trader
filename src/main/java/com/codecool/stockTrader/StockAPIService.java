@@ -12,8 +12,8 @@ public class StockAPIService {
     private static final String apiPath = "https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=%s";
     private final RemoteURLReader remoteURLReader;
 
-    public StockAPIService() {
-        remoteURLReader = new RemoteURLReader();
+    public StockAPIService(RemoteURLReader remoteURLReader) {
+        this.remoteURLReader = remoteURLReader;
     }
 
     /**
@@ -25,9 +25,10 @@ public class StockAPIService {
         String url = String.format(apiPath, symbol);
         String result = remoteURLReader.readFromUrl(url);
         JSONObject json = new JSONObject(result);
+        if (!symbol.equalsIgnoreCase(json.get("symbol").toString())) {
+            throw new IllegalArgumentException("Symbol does not exist!");
+        }
         String price = json.get("price").toString();
-        // todo When calling the getPrice() method, if the given symbol does not appear in the response,
-        //  an IllegalArgumentException is thrown, with a "Symbol does not exist!" message.
         return Double.parseDouble(price);
     }
 

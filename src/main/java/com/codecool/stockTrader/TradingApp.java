@@ -16,7 +16,7 @@ public class TradingApp {
     }
 
     public static void main(String[] args) {
-        StockAPIService stockAPIService = new StockAPIService();
+        StockAPIService stockAPIService = new StockAPIService(new RemoteURLReader());
         FileLogger logger = new FileLogger();
         Trader trader = new Trader(stockAPIService, logger);
         TradingApp app = new TradingApp(trader, logger);
