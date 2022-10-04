@@ -7,18 +7,12 @@ import java.io.IOException;
  **/
 public class Trader {
 
-    private static Trader instance;
     private final StockAPIService stockService;
+    private final Logger fileLogger;
 
-    public Trader() {
-        this.stockService = new StockAPIService();
-    }
-
-    public static Trader getInstance() {
-        if (instance == null) {
-            instance = new Trader();
-        }
-        return instance;
+    public Trader(StockAPIService stockService, Logger fileLogger) {
+        this.stockService = stockService;
+        this.fileLogger = fileLogger;
     }
 
     /**
@@ -28,14 +22,13 @@ public class Trader {
      */
     public boolean buy(String symbol, double bid) throws IOException {
         double price = stockService.getPrice(symbol);
-
         boolean result;
         if (price <= bid) {
             result = true;
             stockService.buy(symbol);
-            FileLogger.getInstance().log("Purchased " + symbol + " stock at $" + bid + ", since its higher that the current price ($" + price + ")");
+            fileLogger.log("Purchased " + symbol + " stock at $" + bid + ", since its higher that the current price ($" + price + ")");
         } else {
-            FileLogger.getInstance().log("Bid for " + symbol + " was $" + bid + " but the stock price is $" + price + ", no purchase was made.");
+            fileLogger.log("Bid for " + symbol + " was $" + bid + " but the stock price is $" + price + ", no purchase was made.");
             result = false;
         }
         return result;

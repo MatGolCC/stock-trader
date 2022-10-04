@@ -7,16 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FileLogger {
-
-    private static FileLogger instance;
-
-    public static FileLogger getInstance() {
-        if (instance == null) {
-            instance = new FileLogger();
-        }
-        return instance;
-    }
+public class FileLogger implements Logger {
 
     public void log(String message) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
