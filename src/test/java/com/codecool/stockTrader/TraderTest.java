@@ -2,7 +2,6 @@ package com.codecool.stockTrader;
 
 import org.junit.jupiter.api.Test;
 
-
 class TraderTest {
     @Test
     void buy_bidLowerThanPrice_returnFalse() {

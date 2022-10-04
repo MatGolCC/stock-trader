@@ -24,7 +24,7 @@ public class FileLogger {
         String msg = dateFormat.format(date) + " " + message;
         System.out.println(msg);
         try {
-            FileWriter fileWriter = new FileWriter("log.txt",true);
+            FileWriter fileWriter = new FileWriter("log.txt", true);
             PrintWriter printWriter = new PrintWriter(fileWriter);
             printWriter.println(msg);
             printWriter.close();
